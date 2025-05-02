@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./docker/backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env
+    command: npm run start:dev
+    depends_on:
+      - frontend
+
+  frontend:
+    build: ./docker/frontend
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    env_file:
+      - ./frontend/.env
+    command: npm run dev
