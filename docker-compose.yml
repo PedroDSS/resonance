@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   backend:
-    build: ./docker/backend
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
     container_name: backend
     ports:
       - "3000:3000"
@@ -15,7 +17,9 @@ services:
       - frontend
 
   frontend:
-    build: ./docker/frontend
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
     container_name: frontend
     ports:
       - "5173:5173"
