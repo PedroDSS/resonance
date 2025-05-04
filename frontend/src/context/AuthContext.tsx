@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextType {
     user: any | null;
+    setUser: React.Dispatch<React.SetStateAction<any | null>>;
     login: (user: any) => void;
     logout: () => void;
 }

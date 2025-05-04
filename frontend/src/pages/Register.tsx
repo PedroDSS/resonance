@@ -40,7 +40,7 @@ const Register = () => {
                     {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <Label htmlFor="username" className="text-muted">Nom d'utilisateur</Label>
+                            <Label htmlFor="username" className="text-gold mb-1">Nom d'utilisateur</Label>
                             <Input
                                 id="username"
                                 value={username}
@@ -49,7 +49,7 @@ const Register = () => {
                             />
                         </div>
                         <div>
-                            <Label htmlFor="password" className="text-muted">Mot de passe</Label>
+                            <Label htmlFor="password" className="text-gold mb-1">Mot de passe</Label>
                             <Input
                                 id="password"
                                 type="password"

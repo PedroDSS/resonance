@@ -7,6 +7,7 @@ import {
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Chat from './pages/Chat';
+import EditProfile from './pages/EditProfile';
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -40,9 +41,16 @@ const chatRoute = createRoute({
     component: Chat,
 });
 
+const editProfileRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/edit-profile',
+    component: EditProfile,
+});
+
 export const routeTree = rootRoute.addChildren([
     indexRoute,
     loginRoute,
     registerRoute,
     chatRoute,
+    editProfileRoute,
 ]);

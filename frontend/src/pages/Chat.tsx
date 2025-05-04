@@ -80,12 +80,20 @@ const Chat = () => {
                     <h1 className="text-3xl font-bold">
                         Bienvenue, <span className="text-gold">{user.username}</span>
                     </h1>
-                    <Button onClick={logout} className="bg-primary hover:bg-gold text-black font-semibold">
-                        Logout
-                    </Button>
+                    <div className="flex space-x-4">
+                        <Button
+                            onClick={() => navigate({ to: '/edit-profile' })}
+                            className="bg-muted hover:bg-gold text-black font-semibold"
+                        >
+                            Modifier mon profil
+                        </Button>
+                        <Button onClick={logout} className="bg-primary hover:bg-gold text-black font-semibold">
+                            Déconnexion
+                        </Button>
+                    </div>
                 </div>
 
-                <div className="bg-tertiary p-4 rounded-lg shadow-inner text-muted h-96 overflow-y-auto">
+                <div className="bg-tertiary p-4 rounded-lg shadow-inner text-muted h-128 overflow-y-auto">
                     {messages.length === 0 ? (
                         <p className="text-center text-muted">Il n'y a aucun message...</p>
                     ) : (
@@ -112,8 +120,14 @@ const Chat = () => {
                         type="text"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && message.trim()) {
+                                e.preventDefault();
+                                handleSendMessage();
+                            }
+                        }}
                         className="w-full p-3 bg-secondary text-light border-muted rounded-lg"
-                        placeholder="Type your message..."
+                        placeholder="Ecrivez votre message.."
                     />
                     <Button
                         onClick={handleSendMessage}
