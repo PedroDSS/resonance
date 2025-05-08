@@ -15,6 +15,9 @@ export class User {
     @Column()
     color: string;
 
+    @Column({ nullable: true })
+    avatar: string;
+
     @OneToMany(() => Message, message => message.sender)
     messages: Message[];
 }

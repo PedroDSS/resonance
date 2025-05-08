@@ -27,7 +27,7 @@ const EditProfile = () => {
 
         try {
             const response = await axios.patch(
-                `${import.meta.env.VITE_API_URL}/users/me`,
+                `${import.meta.env.VITE_SOCKET_URL}/users/me`,
                 formData,
                 {
                     headers: {
