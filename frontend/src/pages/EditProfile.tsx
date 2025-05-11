@@ -8,20 +8,56 @@ const EditProfile = () => {
     const { user, setUser } = useAuth();
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState(user?.username || '');
+    const [displayName, setDisplayName] = useState(user?.displayName || '');
     const [color, setColor] = useState(user?.color || '#ffffff');
     const [avatar, setAvatar] = useState<File | null>(null);
+    const [avatarError, setAvatarError] = useState<string | null>(null);
 
     if (!user) {
         navigate({ to: '/login' });
         return null;
     }
 
+    const handleAvatarChange = (file: File | null) => {
+        setAvatar(null);
+        setAvatarError(null);
+
+        if (!file) return;
+
+        if (file.size > 500 * 1024) {
+            setAvatarError('L’image dépasse 500 Ko. Merci d’en choisir une plus légère.');
+            return;
+        }
+
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+
+        img.onload = () => {
+            if (img.width > 256 || img.height > 256) {
+                setAvatarError('L’image dépasse 256x256 pixels. Elle ne sera pas acceptée.');
+                URL.revokeObjectURL(objectUrl);
+                return;
+            }
+
+            setAvatar(file);
+            setAvatarError(null);
+            URL.revokeObjectURL(objectUrl);
+        };
+
+        img.onerror = () => {
+            setAvatarError('Impossible de lire l’image.');
+            URL.revokeObjectURL(objectUrl);
+        };
+
+        img.src = objectUrl;
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (avatarError) return;
 
         const formData = new FormData();
-        formData.append('username', username);
+        formData.append('displayName', displayName);
         formData.append('color', color);
         if (avatar) formData.append('avatar', avatar);
 
@@ -59,8 +95,8 @@ const EditProfile = () => {
                         <label className="block mb-1 font-semibold">Pseudonyme</label>
                         <input
                             type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
                             className="w-full p-2 bg-secondary text-light rounded border border-muted"
                         />
                     </div>
@@ -82,7 +118,7 @@ const EditProfile = () => {
                                 id="avatar"
                                 type="file"
                                 accept="image/*"
-                                onChange={(e) => setAvatar(e.target.files?.[0] || null)}
+                                onChange={(e) => handleAvatarChange(e.target.files?.[0] || null)}
                                 className="hidden"
                             />
                             <label
@@ -91,8 +127,11 @@ const EditProfile = () => {
                             >
                                 Choisir un fichier
                             </label>
-                            {avatar && (
+                            {avatar && !avatarError && (
                                 <p className="mt-1 text-sm text-muted">{avatar.name}</p>
+                            )}
+                            {avatarError && (
+                                <p className="mt-1 text-sm text-red-500 font-medium">{avatarError}</p>
                             )}
                         </div>
                     </div>
@@ -100,6 +139,7 @@ const EditProfile = () => {
                     <Button
                         type="submit"
                         className="w-full bg-primary hover:bg-gold text-black font-semibold"
+                        disabled={!!avatarError}
                     >
                         Sauvegarder
                     </Button>

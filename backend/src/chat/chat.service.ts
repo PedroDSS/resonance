@@ -13,7 +13,7 @@ export class ChatService {
         private readonly userRepository: Repository<User>,
     ) { }
 
-    async saveMessage(data: { userId: number; message: string; username: string; timestamp: Date }) {
+    async saveMessage(data: { userId: number; message: string; timestamp: Date }) {
         const user = await this.userRepository.findOne({ where: { id: data.userId } });
 
         if (!user) {
@@ -21,7 +21,6 @@ export class ChatService {
         }
         const newMessage = this.messageRepository.create({
             message: data.message,
-            username: data.username,
             timestamp: data.timestamp,
             sender: user,
         });

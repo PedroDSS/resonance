@@ -9,9 +9,6 @@ export class Message {
     @Column()
     message: string;
 
-    @Column()
-    username: string;
-
     @ManyToOne(() => User, user => user.messages)
     sender: User;
 

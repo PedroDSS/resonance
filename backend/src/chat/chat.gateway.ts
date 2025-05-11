@@ -60,7 +60,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             const savedMessage = await this.chatService.saveMessage({
                 userId: user.id,
                 message: data.message,
-                username: user.username,
                 timestamp: new Date(),
             });
 

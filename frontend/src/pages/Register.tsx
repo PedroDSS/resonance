@@ -7,15 +7,32 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Link } from '@tanstack/react-router';
 
+const checkPasswordStrength = (password: string) => {
+    return {
+        length: password.length >= 8,
+        lowercase: /[a-z]/.test(password),
+        uppercase: /[A-Z]/.test(password),
+        number: /\d/.test(password),
+        specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+};
+
 const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const strength = checkPasswordStrength(password);
+    const isPasswordValid = Object.values(strength).every(Boolean);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        if (!isPasswordValid) {
+            setError("Le mot de passe ne respecte pas les critères de sécurité.");
+            return;
+        }
 
         try {
             await register(username, password);
@@ -58,7 +75,18 @@ const Register = () => {
                                 className="bg-secondary text-light border-muted rounded-lg"
                             />
                         </div>
-                        <Button type="submit" className="w-full bg-primary hover:bg-gold text-black font-semibold rounded-lg py-2">
+                        <div className="text-sm space-y-1">
+                            <p className={strength.length ? "text-green-500" : "text-red-500"}>Au moins 8 caractères</p>
+                            <p className={strength.lowercase ? "text-green-500" : "text-red-500"}>Une minuscule</p>
+                            <p className={strength.uppercase ? "text-green-500" : "text-red-500"}>Une majuscule</p>
+                            <p className={strength.number ? "text-green-500" : "text-red-500"}>Un chiffre</p>
+                            <p className={strength.specialChar ? "text-green-500" : "text-red-500"}>Un caractère spécial (!@#$...)</p>
+                        </div>
+                        <Button
+                            type="submit"
+                            disabled={!isPasswordValid}
+                            className="w-full bg-primary hover:bg-gold text-black font-semibold rounded-lg py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
                             S'inscrire
                         </Button>
                     </form>
