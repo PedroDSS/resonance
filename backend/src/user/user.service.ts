@@ -35,4 +35,14 @@ export class UserService {
         }
         return user;
     }
+
+    async findByResetToken(token: string): Promise<User | null> {
+        return this.userRepo.findOne({
+            where: { resetToken: token },
+        });
+    }
+
+    async save(user: User): Promise<User> {
+        return this.userRepo.save(user);
+    }
 }

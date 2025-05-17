@@ -67,6 +67,11 @@ const Login = () => {
                             Se connecter
                         </Button>
                     </form>
+                    <div className="mt-3 text-center">
+                        <Link to="/forgot-password" className="text-sm text-primary hover:text-gold">
+                            Mot de passe oublié ?
+                        </Link>
+                    </div>
                     <div className="mt-4 text-center">
                         <p className="text-muted text-sm">
                             Pas encore inscrit ?

@@ -1,13 +1,17 @@
 import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { MailerService } from '@nestjs-modules/mailer';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcryptjs';
+import * as crypto from 'crypto';
+import { addMinutes } from 'date-fns';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly userService: UserService,
         private readonly jwtService: JwtService,
+        private readonly mailerService: MailerService
     ) { }
 
     async register(email: string, password: string) {
@@ -54,4 +58,39 @@ export class AuthService {
             },
         };
     }
+
+    async sendResetEmail(email: string) {
+        const user = await this.userService.findByEmail(email);
+        if (!user) throw new BadRequestException("Cet email n'est associé à aucun compte.");
+
+        const token = crypto.randomBytes(32).toString('hex');
+        user.resetToken = token;
+        user.resetTokenExpires = addMinutes(new Date(), 15);
+        await this.userService.save(user);
+
+        const resetLink = `http://localhost:5173/reset-password?token=${token}`;
+        await this.mailerService.sendMail({
+            to: email,
+            subject: 'Réinitialisation de mot de passe',
+            html: `<p>Cliquez ici pour réinitialiser votre mot de passe : <a href="${resetLink}">${resetLink}</a></p>`,
+        });
+
+        return { message: 'Email envoyé si l’adresse existe.' };
+    }
+
+    async resetPassword(token: string, newPassword: string) {
+        const user = await this.userService.findByResetToken(token);
+
+        if (!user || !user.resetTokenExpires || user.resetTokenExpires < new Date()) {
+            throw new BadRequestException('Token invalide ou expiré');
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        user.resetToken = null;
+        user.resetTokenExpires = null;
+
+        await this.userService.save(user);
+        return { message: 'Mot de passe mis à jour avec succès.' };
+    }
+
 }

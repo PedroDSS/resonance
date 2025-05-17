@@ -1,13 +1,18 @@
 # 🌀 Resonance - Chat en temps réel
 
-**Resonance** est une application de chat en temps réel développée avec **React**, **NestJS**. Elle permet aux utilisateurs de s'inscrire, se connecter, et discuter en direct dans une interface élégante et moderne.
+**Resonance** est une application de chat en temps réel développée en **NestJS** et **React**. 
+Elle permet aux utilisateurs de discuter en direct dans une interface élégante et moderne.
 
 ---
 
 ## 🚀 Fonctionnalités
 
 - ✅ Authentification avec JWT (inscription et connexion sécurisée)
-- 💬 Chat en temps réel via WebSockets
+- 🔐 Réinitialisation de mot de passe via lien sécurisé par email
+- ✅ Vérification de la force du mot de passe à l'inscription et à la réinitialisation
+- 👤 Mise à jour du profil utilisateur (changement de pseudo, d'avatar et de couleur de texte)
+- 🖼️ Support des photos de profil dans le chat
+- 💬 Chat en temps réel via WebSocket
 - 🕒 Affichage de l'historique des messages à la connexion
 - 🎨 Couleur d'utilisateur générée aléatoirement à l'inscription
 
@@ -31,6 +36,7 @@
 - [SQLite](https://www.sqlite.org/)
 - [Socket.IO](https://socket.io/)
 - [JWT](https://jwt.io/)
+- [MailDev] (https://github.com/maildev/maildev)
 - [bcrypt](https://www.npmjs.com/package/bcrypt)
 
 ---
@@ -40,8 +46,8 @@
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/ton-utilisateur/resonance-chat.git
-cd resonance-chat
+git clone https://github.com/PedroDSS/resonance.git
+cd resonance
 ```
 
 ### 2. Configurer les variables d’environnement
@@ -53,6 +59,9 @@ PORT=3000
 JWT_SECRET=anaxagoras
 JWT_EXPIRES_IN=1d
 DATABASE_PATH=./db.sqlite
+MAIL_HOST=maildev
+MAIL_PORT=1025
+MAIL_FROM=no-reply@example.com
 ```
 
 .env – Frontend (/frontend/.env)

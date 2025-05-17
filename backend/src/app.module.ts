@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailerModule } from '@nestjs-modules/mailer';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './user/user.entity';
@@ -15,6 +16,15 @@ import { AuthModule } from './auth/auth.module';
       database: 'data/chat.sqlite',
       entities: [User, Message],
       synchronize: true,
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'maildev',
+        port: 1025,
+      },
+      defaults: {
+        from: '"Resonance" <no-reply@resonance.com>',
+      },
     }),
     UserModule,
     ChatModule,

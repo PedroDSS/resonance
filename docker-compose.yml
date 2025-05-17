@@ -28,3 +28,10 @@ services:
     env_file:
       - ./frontend/.env
     command: npm run dev
+
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"

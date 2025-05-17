@@ -23,4 +23,10 @@ export class User {
 
     @OneToMany(() => Message, message => message.sender)
     messages: Message[];
+
+    @Column({ type: 'text', nullable: true })
+    resetToken: string | null;
+
+    @Column({ type: 'datetime', nullable: true })
+    resetTokenExpires: Date | null;
 }
