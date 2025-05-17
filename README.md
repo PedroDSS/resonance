@@ -3,6 +3,8 @@
 **Resonance** est une application de chat en temps réel développée en **NestJS** et **React**. 
 Elle permet aux utilisateurs de discuter en direct dans une interface élégante et moderne.
 
+> **Important** : Le design, les couleurs et certains éléments visuels de ce projet sont librement inspirés de l’univers graphique de **HoYoverse**, notamment du jeu **Genshin Impact**. Ce projet est entièrement personnel, à but non commercial, et ne revendique aucune affiliation officielle.
+
 ---
 
 ## 🚀 Fonctionnalités
@@ -10,7 +12,7 @@ Elle permet aux utilisateurs de discuter en direct dans une interface élégante
 - ✅ Authentification avec JWT (inscription et connexion sécurisée)
 - 🔐 Réinitialisation de mot de passe via lien sécurisé par email
 - ✅ Vérification de la force du mot de passe à l'inscription et à la réinitialisation
-- 👤 Mise à jour du profil utilisateur (changement de pseudo, d'avatar et de couleur de texte)
+- 👤 Mise à jour du profil utilisateur (changement de pseudonyme, d'avatar et de couleur de pseudonyme)
 - 🖼️ Support des photos de profil dans le chat
 - 💬 Chat en temps réel via WebSocket
 - 🕒 Affichage de l'historique des messages à la connexion
@@ -36,7 +38,7 @@ Elle permet aux utilisateurs de discuter en direct dans une interface élégante
 - [SQLite](https://www.sqlite.org/)
 - [Socket.IO](https://socket.io/)
 - [JWT](https://jwt.io/)
-- [MailDev] (https://github.com/maildev/maildev)
+- [MailDev](https://github.com/maildev/maildev)
 - [bcrypt](https://www.npmjs.com/package/bcrypt)
 
 ---

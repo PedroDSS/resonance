@@ -123,28 +123,34 @@ const Chat = () => {
 
     return (
         <div className="min-h-screen bg-secondary text-light p-4">
-            <header className="w-full">
-                <h1 className="text-center text-4xl font-extrabold text-light">Resonance</h1>
+            <header className="w-full flex justify-center mt-4">
+                <h1 className="text-4xl font-extrabold bg-gradient-to-r from-[#A0E9D6] via-[#7BCBFF] via-[#C084FC] via-[#FFD479] to-[#FF7B7B] text-transparent bg-clip-text">
+                    Resonance
+                </h1>
             </header>
+
             <div className="max-w-4xl mx-auto mt-10">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold">
+                    <h2 className="text-2xl font-bold">
                         Bienvenue, <span className="text-gold">{capitalize(user.username)}</span>
-                    </h1>
-                    <div className="flex space-x-4">
+                    </h2>
+                    <div className="flex gap-3">
                         <Button
                             onClick={() => navigate({ to: '/edit-profile' })}
-                            className="bg-muted hover:bg-gold text-black font-semibold"
+                            className="bg-muted hover:bg-gold text-black font-semibold rounded-md"
                         >
                             Modifier mon profil
                         </Button>
-                        <Button onClick={logout} className="bg-primary hover:bg-gold text-black font-semibold">
+                        <Button
+                            onClick={logout}
+                            className="bg-primary hover:bg-gold text-black font-semibold rounded-md"
+                        >
                             Déconnexion
                         </Button>
                     </div>
                 </div>
 
-                <div className="bg-tertiary p-4 rounded-lg shadow-inner text-muted h-128 overflow-y-auto flex flex-col">
+                <div className="bg-tertiary p-4 rounded-2xl shadow-inner text-muted h-128 overflow-y-auto flex flex-col">
                     <div className="flex-1">
                         {messages.length === 0 ? (
                             <p className="text-center text-muted">Il n'y a aucun message...</p>
@@ -155,7 +161,7 @@ const Chat = () => {
                                     : '/default-avatar.png';
 
                                 return (
-                                    <div key={msg.id} className="mb-4 flex items-start space-x-3">
+                                    <div key={msg.id} className="mb-4 flex items-start gap-3">
                                         <img
                                             src={avatarUrl}
                                             alt="Avatar"
@@ -206,8 +212,8 @@ const Chat = () => {
                                 handleSendMessage();
                             }
                         }}
-                        className="w-full p-3 bg-secondary text-light border-muted rounded-lg"
-                        placeholder="Ecrivez votre message.."
+                        className="w-full p-3 bg-secondary text-light border border-muted rounded-lg"
+                        placeholder="Écrivez votre message..."
                     />
                     <Button
                         onClick={handleSendMessage}

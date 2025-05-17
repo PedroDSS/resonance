@@ -81,15 +81,18 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-secondary text-light px-4">
-            <div className="bg-tertiary p-8 rounded-lg shadow-lg w-full max-w-md relative">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-secondary text-light px-4 py-12">
+            <h1 className="text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-[#A0E9D6] via-[#7BCBFF] via-[#C084FC] via-[#FFD479] to-[#FF7B7B] text-transparent bg-clip-text">
+                Resonance
+            </h1>
+            <div className="bg-tertiary p-8 rounded-2xl shadow-xl w-full max-w-md">
                 <Button
                     onClick={() => navigate({ to: '/' })}
-                    className="bg-muted hover:bg-gold mb-4 text-black font-semibold"
+                    className="bg-muted hover:bg-gold mb-4 text-black font-semibold rounded-md"
                 >
                     ← Retour au chat
                 </Button>
-                <h1 className="text-3xl font-bold mb-6 text-center">Modifier mon profil</h1>
+                <h2 className="text-center text-3xl font-bold mb-6">Modifier mon profil</h2>
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
                         <label className="block mb-1 font-semibold">Pseudonyme</label>
@@ -100,17 +103,15 @@ const EditProfile = () => {
                             className="w-full p-2 bg-secondary text-light rounded border border-muted"
                         />
                     </div>
-
                     <div>
                         <label className="block mb-1 font-semibold">Couleur de pseudo</label>
                         <input
                             type="color"
                             value={color}
                             onChange={(e) => setColor(e.target.value)}
-                            className="w-16 h-10 p-0 border-none bg-transparent"
+                            className="w-16 h-10 p-0 border-none bg-transparent cursor-pointer"
                         />
                     </div>
-
                     <div>
                         <label className="block mb-1 font-semibold">Photo de profil</label>
                         <div className="relative">
@@ -135,7 +136,6 @@ const EditProfile = () => {
                             )}
                         </div>
                     </div>
-
                     <Button
                         type="submit"
                         className="w-full bg-primary hover:bg-gold text-black font-semibold"

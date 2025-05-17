@@ -63,50 +63,48 @@ const ResetPassword = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-secondary text-light">
-            <header className="w-full">
-                <h1 className="text-center text-4xl font-extrabold text-light">Resonance</h1>
+            <header className="w-full flex justify-center mt-4">
+                <h1 className="text-4xl font-extrabold bg-gradient-to-r from-[#A0E9D6] via-[#7BCBFF] via-[#C084FC] via-[#FFD479] to-[#FF7B7B] text-transparent bg-clip-text">
+                    Resonance
+                </h1>
             </header>
-
-            <Card className="w-full max-w-md bg-tertiary text-light shadow-lg rounded-lg mt-8">
+            <Card className="w-full max-w-md bg-tertiary text-light shadow-lg rounded-2xl mt-8">
                 <CardContent className="p-6">
-                    <h2 className="text-2xl font-semibold mb-4 text-center text-gold">Réinitialiser le mot de passe</h2>
-                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+                    <h2 className="text-2xl font-semibold mb-4 text-center text-primary">Réinitialiser le mot de passe</h2>
+                    {error && <p className="text-error text-center mb-4">{error}</p>}
                     {success && <p className="text-green-500 text-center mb-4">{success}</p>}
-
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <Label htmlFor="password" className="text-gold mb-1">Nouveau mot de passe</Label>
+                            <Label htmlFor="password" className="text-muted mb-1">Nouveau mot de passe</Label>
                             <Input
                                 id="password"
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="bg-secondary text-light border-muted rounded-lg"
+                                className="bg-secondary text-light border border-muted focus:border-primary rounded-md"
                             />
                         </div>
                         <div>
-                            <Label htmlFor="confirmPassword" className="text-gold mb-1">Confirmer le mot de passe</Label>
+                            <Label htmlFor="confirmPassword" className="text-muted mb-1">Confirmer le mot de passe</Label>
                             <Input
                                 id="confirmPassword"
                                 type="password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="bg-secondary text-light border-muted rounded-lg"
+                                className="bg-secondary text-light border border-muted focus:border-primary rounded-md"
                             />
                         </div>
-
-                        <div className="text-sm space-y-1">
+                        <div className="text-sm space-y-1 mt-2">
                             <p className={strength.length ? "text-green-500" : "text-red-500"}>Au moins 8 caractères</p>
                             <p className={strength.lowercase ? "text-green-500" : "text-red-500"}>Une minuscule</p>
                             <p className={strength.uppercase ? "text-green-500" : "text-red-500"}>Une majuscule</p>
                             <p className={strength.number ? "text-green-500" : "text-red-500"}>Un chiffre</p>
                             <p className={strength.specialChar ? "text-green-500" : "text-red-500"}>Un caractère spécial (!@#$...)</p>
                         </div>
-
                         <Button
                             type="submit"
                             disabled={!isPasswordValid}
-                            className="w-full bg-primary hover:bg-gold text-black font-semibold rounded-lg py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-primary hover:bg-gold text-white font-medium rounded-md py-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Réinitialiser
                         </Button>
@@ -115,6 +113,7 @@ const ResetPassword = () => {
             </Card>
         </div>
     );
+
 };
 
 export default ResetPassword;

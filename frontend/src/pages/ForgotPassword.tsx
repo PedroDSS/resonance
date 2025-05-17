@@ -27,33 +27,33 @@ const ForgotPassword = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-secondary text-light">
-            <header className="w-full">
-                <h1 className="text-center text-4xl font-extrabold text-light">
+            <header className="w-full flex justify-center mt-4">
+                <h1 className="text-4xl font-extrabold bg-gradient-to-r from-[#A0E9D6] via-[#7BCBFF] via-[#C084FC] via-[#FFD479] to-[#FF7B7B] text-transparent bg-clip-text">
                     Resonance
                 </h1>
             </header>
 
-            <Card className="w-full max-w-md bg-tertiary text-light shadow-lg rounded-lg mt-8">
+            <Card className="w-full max-w-md bg-tertiary text-light shadow-lg rounded-2xl mt-8">
                 <CardContent className="p-6">
-                    <h2 className="text-2xl font-semibold mb-4 text-center text-gold">Mot de passe oublié</h2>
+                    <h2 className="text-2xl font-semibold mb-4 text-center text-primary">Mot de passe oublié</h2>
 
-                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+                    {error && <p className="text-error text-center mb-4">{error}</p>}
                     {success && <p className="text-green-500 text-center mb-4">{success}</p>}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <Label htmlFor="email" className="text-gold mb-1">Adresse email</Label>
+                            <Label htmlFor="email" className="text-muted mb-1">Adresse email</Label>
                             <Input
                                 id="email"
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="bg-secondary text-light border-muted rounded-lg"
+                                className="bg-secondary text-light border border-muted focus:border-primary rounded-md"
                             />
                         </div>
                         <Button
                             type="submit"
-                            className="w-full bg-primary hover:bg-gold text-black font-semibold rounded-lg py-2"
+                            className="w-full bg-primary hover:bg-gold text-white font-medium rounded-md py-2 transition-colors"
                         >
                             Envoyer le lien
                         </Button>
@@ -62,13 +62,14 @@ const ForgotPassword = () => {
                     <div className="mt-4 text-center">
                         <p className="text-muted text-sm">
                             Vous vous souvenez de votre mot de passe ?
-                            <Link to="/login" className="text-primary hover:text-gold"> Se connecter</Link>
+                            <Link to="/login" className="text-primary hover:text-gold transition-colors"> Se connecter</Link>
                         </p>
                     </div>
                 </CardContent>
             </Card>
         </div>
     );
+
 };
 
 export default ForgotPassword;
