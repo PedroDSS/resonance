@@ -15,6 +15,7 @@ Elle permet aux utilisateurs de discuter en direct dans une interface élégante
 - 👤 Mise à jour du profil utilisateur (changement de pseudonyme, d'avatar et de couleur de pseudonyme)
 - 🖼️ Support des photos de profil dans le chat
 - 💬 Chat en temps réel via WebSocket
+- 😊 Utilisation d'emojis avec autocompletion (exemple :smile:)
 - 🕒 Affichage de l'historique des messages à la connexion
 - 🎨 Couleur d'utilisateur générée aléatoirement à l'inscription
 
