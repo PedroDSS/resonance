@@ -43,6 +43,18 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         }
     }
 
+    @SubscribeMessage('typing')
+    handleTyping(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+        const user = client.data.user;
+
+        if (user) {
+            this.server.emit('typing', {
+                id: user.id,
+                username: user.username,
+            });
+        }
+    }
+
     handleDisconnect(client: Socket) {
         console.log(`User disconnected: ${client.data.user?.username}`);
         // TODO: Envoyer un message a tout le monde quand quelque se connecte/déconnecte ?

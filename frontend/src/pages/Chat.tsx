@@ -49,7 +49,9 @@ const Chat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [message, setMessage] = useState<string>('');
     const [socket, setSocket] = useState<any>(null);
+    const [typingUsers, setTypingUsers] = useState<{ id: number; username: string }[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const typingTimeouts = useRef<{ [key: number]: NodeJS.Timeout }>({});
 
     if (!user) {
         navigate({ to: '/login' });
@@ -75,6 +77,26 @@ const Chat = () => {
             setMessages((prevMessages) => [...prevMessages, msg]);
         });
 
+        socketIo.on('typing', (typingUser: { id: number; username: string }) => {
+            if (typingUser.id !== user.id) {
+                setTypingUsers((prev) => {
+                    if (!prev.some((u) => u.id === typingUser.id)) {
+                        return [...prev, typingUser];
+                    }
+                    return prev;
+                });
+
+                if (typingTimeouts.current[typingUser.id]) {
+                    clearTimeout(typingTimeouts.current[typingUser.id]);
+                }
+
+                typingTimeouts.current[typingUser.id] = setTimeout(() => {
+                    setTypingUsers((prev) => prev.filter((u) => u.id !== typingUser.id));
+                    delete typingTimeouts.current[typingUser.id];
+                }, 400);
+            }
+        });
+
         socketIo.on('disconnect', () => {
             console.log('Disconnected from WebSocket server');
         });
@@ -95,7 +117,7 @@ const Chat = () => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [messages]);
+    }, [messages, typingUsers]);
 
     const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -122,46 +144,62 @@ const Chat = () => {
                     </div>
                 </div>
 
-                <div className="bg-tertiary p-4 rounded-lg shadow-inner text-muted h-128 overflow-y-auto">
-                    {messages.length === 0 ? (
-                        <p className="text-center text-muted">Il n'y a aucun message...</p>
-                    ) : (
-                        messages.map((msg) => {
-                            const avatarUrl = msg.sender?.avatar
-                                ? `${import.meta.env.VITE_SOCKET_URL}/uploads/avatars/${msg.sender.avatar}`
-                                : '/default-avatar.png';
+                <div className="bg-tertiary p-4 rounded-lg shadow-inner text-muted h-128 overflow-y-auto flex flex-col">
+                    <div className="flex-1">
+                        {messages.length === 0 ? (
+                            <p className="text-center text-muted">Il n'y a aucun message...</p>
+                        ) : (
+                            messages.map((msg) => {
+                                const avatarUrl = msg.sender?.avatar
+                                    ? `${import.meta.env.VITE_SOCKET_URL}/uploads/avatars/${msg.sender.avatar}`
+                                    : '/default-avatar.png';
 
-                            return (
-                                <div key={msg.id} className="mb-4 flex items-start space-x-3">
-                                    <img
-                                        src={avatarUrl}
-                                        alt="Avatar"
-                                        className="w-10 h-10 rounded-full object-cover border border-muted"
-                                    />
-                                    <div>
-                                        <p className="text-sm font-semibold">
-                                            <span style={{ color: msg.sender?.color || '#fd6c9e' }}>
-                                                {msg.sender?.username}
-                                                {msg.sender?.id === user.id && ' (Vous)'}
-                                            </span>{' '}
-                                            <span className="text-xs text-gray-400">
-                                                {formatMessageDate(msg.timestamp)}
-                                            </span>
-                                        </p>
-                                        <p className="text-light">{msg.message}</p>
+                                return (
+                                    <div key={msg.id} className="mb-4 flex items-start space-x-3">
+                                        <img
+                                            src={avatarUrl}
+                                            alt="Avatar"
+                                            className="w-10 h-10 rounded-full object-cover border border-muted"
+                                        />
+                                        <div>
+                                            <p className="text-sm font-semibold">
+                                                <span style={{ color: msg.sender?.color || '#fd6c9e' }}>
+                                                    {msg.sender?.username}
+                                                    {msg.sender?.id === user.id && ' (Vous)'}
+                                                </span>{' '}
+                                                <span className="text-xs text-gray-400">
+                                                    {formatMessageDate(msg.timestamp)}
+                                                </span>
+                                            </p>
+                                            <p className="text-light">{msg.message}</p>
+                                        </div>
                                     </div>
+                                );
+                            })
+                        )}
+
+                        <div style={{ minHeight: '24px' }}>
+                            {typingUsers.length > 0 && (
+                                <div className="text-sm text-muted italic">
+                                    {typingUsers.map((u) => u.username).join(', ')} est en train d’écrire...
                                 </div>
-                            );
-                        })
-                    )}
-                    <div ref={messagesEndRef} />
+                            )}
+                        </div>
+
+                        <div ref={messagesEndRef} />
+                    </div>
                 </div>
 
                 <div className="mt-4 flex items-center">
                     <input
                         type="text"
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                        onChange={(e) => {
+                            setMessage(e.target.value);
+                            if (socket) {
+                                socket.emit('typing', { id: user.id, username: user.username });
+                            }
+                        }}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && message.trim()) {
                                 e.preventDefault();
