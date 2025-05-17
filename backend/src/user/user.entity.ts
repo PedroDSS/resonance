@@ -7,6 +7,9 @@ export class User {
     id: number;
 
     @Column({ unique: true })
+    email: string;
+
+    @Column({ unique: true })
     username: string;
 
     @Column()
@@ -17,9 +20,6 @@ export class User {
 
     @Column({ nullable: true })
     avatar: string;
-
-    @Column()
-    displayName: string;
 
     @OneToMany(() => Message, message => message.sender)
     messages: Message[];

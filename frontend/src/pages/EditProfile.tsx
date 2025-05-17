@@ -8,7 +8,7 @@ const EditProfile = () => {
     const { user, setUser } = useAuth();
     const navigate = useNavigate();
 
-    const [displayName, setDisplayName] = useState(user?.displayName || '');
+    const [username, setUsername] = useState(user?.username || '');
     const [color, setColor] = useState(user?.color || '#ffffff');
     const [avatar, setAvatar] = useState<File | null>(null);
     const [avatarError, setAvatarError] = useState<string | null>(null);
@@ -57,7 +57,7 @@ const EditProfile = () => {
         if (avatarError) return;
 
         const formData = new FormData();
-        formData.append('displayName', displayName);
+        formData.append('username', username);
         formData.append('color', color);
         if (avatar) formData.append('avatar', avatar);
 
@@ -95,8 +95,8 @@ const EditProfile = () => {
                         <label className="block mb-1 font-semibold">Pseudonyme</label>
                         <input
                             type="text"
-                            value={displayName}
-                            onChange={(e) => setDisplayName(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className="w-full p-2 bg-secondary text-light rounded border border-muted"
                         />
                     </div>

@@ -18,7 +18,7 @@ const checkPasswordStrength = (password: string) => {
 };
 
 const Register = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -34,12 +34,23 @@ const Register = () => {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError("Adresse email invalide.");
+            return;
+        }
+
         try {
-            await register(username, password);
+            await register(email, password);
             navigate({ to: '/login' });
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error while trying to register', error);
-            setError('Un problème est survenu lors de l\'inscription.');
+            const backendMessage = error?.response?.data?.message;
+            if (backendMessage) {
+                setError(typeof backendMessage === 'string' ? backendMessage : backendMessage[0]);
+            } else {
+                setError("Un problème est survenu lors de l'inscription.");
+            }
         }
     };
 
@@ -57,11 +68,12 @@ const Register = () => {
                     {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <Label htmlFor="username" className="text-gold mb-1">Nom d'utilisateur</Label>
+                            <Label htmlFor="email" className="text-gold mb-1">Adresse email</Label>
                             <Input
-                                id="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="bg-secondary text-light border-muted rounded-lg"
                             />
                         </div>

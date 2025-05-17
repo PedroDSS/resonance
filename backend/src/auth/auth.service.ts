@@ -10,32 +10,35 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) { }
 
-    async register(username: string, password: string) {
-        username = username.trim().toLowerCase();
-        const displayName = username.trim().toUpperCase()
+    async register(email: string, password: string) {
+        email = email.trim().toLowerCase();
 
-        if (username.length < 3) {
-            throw new BadRequestException('Username must be at least 3 characters long');
+        const rawUsername = email.split('@')[0];
+        const username = rawUsername.charAt(0).toUpperCase() + rawUsername.slice(1).toLowerCase();
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            throw new BadRequestException('Email invalide');
         }
 
         if (password.length < 8) {
-            throw new BadRequestException('Password must be at least 8 characters long');
+            throw new BadRequestException('Mot de passe trop court');
         }
 
-        const existingUser = await this.userService.findByUsername(username);
+        const existingUser = await this.userService.findByEmail(email);
         if (existingUser) {
-            throw new BadRequestException('Username is already taken');
+            throw new BadRequestException('Email déjà utilisé');
         }
 
         const hashed = await bcrypt.hash(password, 10);
         const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
 
-        return this.userService.create({ username, password: hashed, displayName, color: randomColor });
+        return this.userService.create({ email, password: hashed, username, color: randomColor });
     }
 
-    async login(username: string, password: string) {
-        username = username.trim().toLowerCase();
-        const user = await this.userService.findByUsername(username);
+    async login(email: string, password: string) {
+        email = email.trim().toLowerCase();
+        const user = await this.userService.findByEmail(email);
         if (!user || !(await bcrypt.compare(password, user.password))) {
             throw new UnauthorizedException('Invalid credentials');
         }
@@ -46,7 +49,7 @@ export class AuthService {
             user: {
                 id: user.id,
                 username: user.username,
-                displayName: user.displayName,
+                email: user.email,
                 color: user.color
             },
         };

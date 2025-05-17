@@ -8,13 +8,13 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @Post('register')
-    register(@Body() body: { username: string; password: string }) {
-        return this.authService.register(body.username, body.password);
+    register(@Body() body: { email: string; password: string }) {
+        return this.authService.register(body.email, body.password);
     }
 
     @Post('login')
-    login(@Body() body: { username: string; password: string }) {
-        return this.authService.login(body.username, body.password);
+    login(@Body() body: { email: string; password: string }) {
+        return this.authService.login(body.email, body.password);
     }
 
     @UseGuards(JwtAuthGuard)

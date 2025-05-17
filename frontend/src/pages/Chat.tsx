@@ -11,7 +11,6 @@ type Message = {
     sender: {
         id: number;
         username: string;
-        displayName: string;
         color: string;
         avatar?: string;
     };
@@ -142,7 +141,7 @@ const Chat = () => {
                                     <div>
                                         <p className="text-sm font-semibold">
                                             <span style={{ color: msg.sender?.color || '#fd6c9e' }}>
-                                                {msg.sender?.displayName}
+                                                {msg.sender?.username}
                                                 {msg.sender?.id === user.id && ' (Vous)'}
                                             </span>{' '}
                                             <span className="text-xs text-gray-400">

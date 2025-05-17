@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Link } from '@tanstack/react-router';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { login: setUser } = useAuth();
@@ -20,13 +20,13 @@ const Login = () => {
         setError('');
 
         try {
-            const data = await login(username, password);
+            const data = await login(email, password);
             setUser(data.user);
             localStorage.setItem('token', data.access_token);
             navigate({ to: '/chat' });
         } catch (error) {
             console.error('Error while trying to connect', error);
-            setError('Le nom d\'utilisateur ou le mot de passe est incorrect.');
+            setError("L'adresse email ou le mot de passe est incorrect.");
         }
     };
 
@@ -44,11 +44,12 @@ const Login = () => {
                     {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <Label htmlFor="username" className="text-gold mb-1">Nom d'utilisateur</Label>
+                            <Label htmlFor="email" className="text-gold mb-1">Adresse email</Label>
                             <Input
-                                id="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="bg-secondary text-light border-muted rounded-lg"
                             />
                         </div>

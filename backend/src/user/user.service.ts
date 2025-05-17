@@ -18,8 +18,8 @@ export class UserService {
         return this.userRepo.findOne({ where: { id } });
     }
 
-    findByUsername(username: string): Promise<User | null> {
-        return this.userRepo.findOne({ where: { username } });
+    async findByEmail(email: string): Promise<User | null> {
+        return this.userRepo.findOne({ where: { email } });
     }
 
     create(user: Partial<User>): Promise<User> {
